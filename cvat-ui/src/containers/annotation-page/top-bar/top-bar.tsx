@@ -314,11 +314,25 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
         } = this.props;
 
         const newFrame = Math.max(jobInstance.startFrame, frameNumber - frameStep);
+
+        //Check Register current
+        const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+        //Check Register current
+
         if (newFrame !== frameNumber) {
             if (playing) {
                 onSwitchPlay(false);
             }
             this.changeFrame(newFrame);
+        }
+
+        //Check Register New
+        const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+        //Check Register New
+
+        //compare Registers
+        if (uidCurr !== uidNew) {
+            window.alert("You have changed the series/directory");
         }
     };
 
@@ -330,6 +344,11 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
         const { startFrame } = jobInstance;
 
         const newFrame = Math.max(jobInstance.startFrame, frameNumber - 1);
+
+        //Check Register current
+        const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+        //Check Register current
+
         if (newFrame !== frameNumber) {
             if (playing) {
                 onSwitchPlay(false);
@@ -343,6 +362,15 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
                 this.searchEmptyFrame(frameNumber - 1, startFrame);
             }
         }
+
+        //Check Register New
+        const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+        //Check Register New
+
+        //compare Registers
+        if (uidCurr !== uidNew) {
+            window.alert("You have changed the series/directory");
+        }
     };
 
     private onNextFrame = (): void => {
@@ -353,6 +381,11 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
         const { stopFrame } = jobInstance;
 
         const newFrame = Math.min(jobInstance.stopFrame, frameNumber + 1);
+
+        //Check Register current
+        const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+        //Check Register current
+
         if (newFrame !== frameNumber) {
             if (playing) {
                 onSwitchPlay(false);
@@ -366,6 +399,15 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
                 this.searchEmptyFrame(frameNumber + 1, stopFrame);
             }
         }
+
+        //Check Register New
+        const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+        //Check Register New
+
+        //compare Registers
+        if (uidCurr !== uidNew) {
+            window.alert("You have changed the series/directory");
+        }
     };
 
     private onForward = (): void => {
@@ -374,11 +416,25 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
         } = this.props;
 
         const newFrame = Math.min(jobInstance.stopFrame, frameNumber + frameStep);
+
+        //Check Register current
+        const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+        //Check Register current
+
         if (newFrame !== frameNumber) {
             if (playing) {
                 onSwitchPlay(false);
             }
             this.changeFrame(newFrame);
+        }
+
+        //Check Register New
+        const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+        //Check Register New
+
+        //compare Registers
+        if (uidCurr !== uidNew) {
+            window.alert("You have changed the series/directory");
         }
     };
 
@@ -388,11 +444,25 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
         } = this.props;
 
         const newFrame = jobInstance.stopFrame;
+
+        //Check Register current
+        const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+        //Check Register current
+
         if (newFrame !== frameNumber) {
             if (playing) {
                 onSwitchPlay(false);
             }
             this.changeFrame(newFrame);
+        }
+
+        //Check Register New
+        const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+        //Check Register New
+
+        //compare Registers
+        if (uidCurr !== uidNew) {
+            window.alert("You have changed the series/directory");
         }
     };
 
