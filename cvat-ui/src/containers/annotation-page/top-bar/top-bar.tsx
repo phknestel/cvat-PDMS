@@ -326,14 +326,17 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
             this.changeFrame(newFrame);
         }
 
-        //Check Register New
-        const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
-        //Check Register New
+        if(isAbleToChangeFrame()){
+            //Check Register New
+            const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+            //Check Register New
 
-        //compare Registers
-        if (uidCurr !== uidNew) {
-            window.alert("You have changed the series/directory");
+            //compare Registers
+            if (uidCurr !== uidNew) {
+                window.alert("You have changed the series/directory");
+            }
         }
+
     };
 
     private onPrevFrame = (): void => {
@@ -363,13 +366,15 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
             }
         }
 
-        //Check Register New
-        const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
-        //Check Register New
+        if(isAbleToChangeFrame()){
+            //Check Register New
+            const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+            //Check Register New
 
-        //compare Registers
-        if (uidCurr !== uidNew) {
-            window.alert("You have changed the series/directory");
+            //compare Registers
+            if (uidCurr !== uidNew) {
+                window.alert("You have changed the series/directory");
+            }
         }
     };
 
@@ -400,13 +405,15 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
             }
         }
 
-        //Check Register New
-        const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
-        //Check Register New
+        if(isAbleToChangeFrame()){
+            //Check Register New
+            const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+            //Check Register New
 
-        //compare Registers
-        if (uidCurr !== uidNew) {
-            window.alert("You have changed the series/directory");
+            //compare Registers
+            if (uidCurr !== uidNew) {
+                window.alert("You have changed the series/directory");
+            }
         }
     };
 
@@ -428,13 +435,15 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
             this.changeFrame(newFrame);
         }
 
-        //Check Register New
-        const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
-        //Check Register New
+        if(isAbleToChangeFrame()){
+            //Check Register New
+            const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+            //Check Register New
 
-        //compare Registers
-        if (uidCurr !== uidNew) {
-            window.alert("You have changed the series/directory");
+            //compare Registers
+            if (uidCurr !== uidNew) {
+                window.alert("You have changed the series/directory");
+            }
         }
     };
 
@@ -456,13 +465,15 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
             this.changeFrame(newFrame);
         }
 
-        //Check Register New
-        const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
-        //Check Register New
+        if(isAbleToChangeFrame()){
+            //Check Register New
+            const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+            //Check Register New
 
-        //compare Registers
-        if (uidCurr !== uidNew) {
-            window.alert("You have changed the series/directory");
+            //compare Registers
+            if (uidCurr !== uidNew) {
+                window.alert("You have changed the series/directory");
+            }
         }
     };
 
