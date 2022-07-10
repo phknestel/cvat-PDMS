@@ -112,6 +112,7 @@ def _save_task_to_db(db_task):
         db_job = models.Job(segment=db_segment)
         db_job.save()
 
+    
 
     db_task.data.save()
     db_task.save()

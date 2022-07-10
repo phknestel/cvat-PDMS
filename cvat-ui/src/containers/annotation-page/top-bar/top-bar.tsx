@@ -25,6 +25,7 @@ import {
     showStatistics as showStatisticsAction,
     switchPlay,
     undoActionAsync,
+    propagateObjectAsync,
 } from 'actions/annotation-actions';
 import AnnotationTopBarComponent from 'components/annotation-page/top-bar/top-bar';
 import { Canvas } from 'cvat-canvas-wrapper';
@@ -206,6 +207,12 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
             prevButtonType: 'regular',
             nextButtonType: 'regular',
         };
+
+        const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+        console.log("Constructor");
+        sessionStorage.setItem('uidCurr', uidCurr);
+        sessionStorage.setItem('uidPrev', uidCurr);
+        sessionStorage.setItem('changed', "false");
     }
 
     public componentDidMount(): void {
@@ -299,6 +306,10 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
             frameNumber, jobInstance, playing, onSwitchPlay,
         } = this.props;
 
+       //Check Register current
+       const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+       sessionStorage.setItem('uidPrev', uidCurr);
+
         const newFrame = jobInstance.startFrame;
         if (newFrame !== frameNumber) {
             if (playing) {
@@ -317,7 +328,8 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
 
         //Check Register current
         const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
-        //Check Register current
+        sessionStorage.setItem('uidPrev', uidCurr);
+        sessionStorage.setItem('onNextFrame', "false");
 
         if (newFrame !== frameNumber) {
             if (playing) {
@@ -325,18 +337,6 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
             }
             this.changeFrame(newFrame);
         }
-
-        if(isAbleToChangeFrame()){
-            //Check Register New
-            const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
-            //Check Register New
-
-            //compare Registers
-            if (uidCurr !== uidNew) {
-                window.alert("You have changed the series/directory");
-            }
-        }
-
     };
 
     private onPrevFrame = (): void => {
@@ -345,12 +345,12 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
             frameNumber, jobInstance, playing, onSwitchPlay,
         } = this.props;
         const { startFrame } = jobInstance;
-
         const newFrame = Math.max(jobInstance.startFrame, frameNumber - 1);
 
         //Check Register current
         const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
-        //Check Register current
+        sessionStorage.setItem('uidPrev', uidCurr);
+        sessionStorage.setItem('onNextFrame', "false");
 
         if (newFrame !== frameNumber) {
             if (playing) {
@@ -365,59 +365,47 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
                 this.searchEmptyFrame(frameNumber - 1, startFrame);
             }
         }
-
-        if(isAbleToChangeFrame()){
-            //Check Register New
-            const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
-            //Check Register New
-
-            //compare Registers
-            if (uidCurr !== uidNew) {
-                window.alert("You have changed the series/directory");
-            }
-        }
     };
 
+
+
     private onNextFrame = (): void => {
-        const { nextButtonType } = this.state;
-        const {
+        const { nextButtonType} = this.state;
+        let {
             frameNumber, jobInstance, playing, onSwitchPlay,
         } = this.props;
-        const { stopFrame } = jobInstance;
 
+
+        const { stopFrame } = jobInstance;
         const newFrame = Math.min(jobInstance.stopFrame, frameNumber + 1);
 
         //Check Register current
         const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
-        //Check Register current
+        sessionStorage.setItem('uidPrev', uidCurr);
+        sessionStorage.setItem('onNextFrame', "true");
 
-        if (newFrame !== frameNumber) {
-            if (playing) {
-                onSwitchPlay(false);
+
+            if (newFrame !== frameNumber) {
+
+                console.log("in newFrame if");
+                if (playing) {
+                    onSwitchPlay(false);
+                }
+
+                if (nextButtonType === 'regular') {
+                    this.changeFrame(newFrame);
+                } else if (nextButtonType === 'filtered') {
+                    this.searchAnnotations(frameNumber + 1, stopFrame);
+                } else {
+                    this.searchEmptyFrame(frameNumber + 1, stopFrame);
+                }
             }
 
-            if (nextButtonType === 'regular') {
-                this.changeFrame(newFrame);
-            } else if (nextButtonType === 'filtered') {
-                this.searchAnnotations(frameNumber + 1, stopFrame);
-            } else {
-                this.searchEmptyFrame(frameNumber + 1, stopFrame);
-            }
-        }
-
-        if(isAbleToChangeFrame()){
-            //Check Register New
-            const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
-            //Check Register New
-
-            //compare Registers
-            if (uidCurr !== uidNew) {
-                window.alert("You have changed the series/directory");
-            }
-        }
+        //TODO wait function or ckeck events / simulate slow connection in chrome 3G or edge
     };
 
     private onForward = (): void => {
+        console.log("on forward function started");
         const {
             frameNumber, frameStep, jobInstance, playing, onSwitchPlay,
         } = this.props;
@@ -426,24 +414,16 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
 
         //Check Register current
         const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
-        //Check Register current
+        sessionStorage.setItem('uidPrev', uidCurr);
+        sessionStorage.setItem('onNextFrame', "false");
 
         if (newFrame !== frameNumber) {
+            console.log("in newFrame if");
             if (playing) {
                 onSwitchPlay(false);
             }
             this.changeFrame(newFrame);
-        }
-
-        if(isAbleToChangeFrame()){
-            //Check Register New
-            const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
-            //Check Register New
-
-            //compare Registers
-            if (uidCurr !== uidNew) {
-                window.alert("You have changed the series/directory");
-            }
+            console.log("change frame");
         }
     };
 
@@ -456,24 +436,14 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
 
         //Check Register current
         const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
-        //Check Register current
+        sessionStorage.setItem('uidPrev', uidCurr);
+        sessionStorage.setItem('onNextFrame', "false");
 
         if (newFrame !== frameNumber) {
             if (playing) {
                 onSwitchPlay(false);
             }
             this.changeFrame(newFrame);
-        }
-
-        if(isAbleToChangeFrame()){
-            //Check Register New
-            const uidNew = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
-            //Check Register New
-
-            //compare Registers
-            if (uidCurr !== uidNew) {
-                window.alert("You have changed the series/directory");
-            }
         }
     };
 
@@ -545,6 +515,7 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
         const { frameNumber } = this.props;
         const { origin, pathname } = window.location;
         const url = `${origin}${pathname}?frame=${frameNumber}`;
+        console.log(pathname);
         copy(url);
     };
 
@@ -657,6 +628,20 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
             switchPredictor,
             toolsBlockerState,
         } = this.props;
+
+        //TODO store in sessionStore if we were warning last time (not twice)
+
+        console.log("RENDER");
+        const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+        if(uidCurr !== sessionStorage.getItem('uidPrev')){
+            if(uidCurr !== sessionStorage.getItem('uidCurr')){
+            window.alert("You have changed the series/directory. Are you sure you want to continue");
+            sessionStorage.setItem('uidCurr', uidCurr);
+            sessionStorage.setItem('changed', "true");
+            }
+        }else{
+            sessionStorage.setItem('changed', "false");
+        }
 
         const preventDefault = (event: KeyboardEvent | undefined): void => {
             if (event) {

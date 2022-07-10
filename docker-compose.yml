@@ -40,6 +40,7 @@ services:
       CVAT_POSTGRES_HOST: 'cvat_db'
       ADAPTIVE_AUTO_ANNOTATION: 'false'
       no_proxy: elasticsearch,kibana,logstash,nuclio,opa,${no_proxy}
+      CVAT_SHARE_URL: 'Mounted from /mac_shared/CVAT-Tools/DICOMToPng host directory'
     labels:
       - traefik.enable=true
       - traefik.http.services.cvat.loadbalancer.server.port=8080
@@ -50,12 +51,13 @@ services:
       - cvat_data:/home/django/data
       - cvat_keys:/home/django/keys
       - cvat_logs:/home/django/logs
+      - cvat_share:/home/django/share:ro
     networks:
       - cvat
 
   cvat_ui:
     container_name: cvat_ui
-    image: openvino/cvat_ui
+    image: cvatpdms
     restart: always
     depends_on:
       - cvat
@@ -111,6 +113,11 @@ volumes:
   cvat_data:
   cvat_keys:
   cvat_logs:
+  cvat_share:
+    driver_opts:
+      type: none
+      device: /home/philipp/Dokumente/mac_shared/cvat-PDMS/DICOMToPng
+      o: bind
 
 networks:
   cvat:

@@ -237,6 +237,20 @@ class ObjectsListContainer extends React.PureComponent<Props, State> {
         }
     }
 
+    public outAllObjects(): void {
+        const { objectStates, updateAnnotations, readonly } = this.props;
+        if (!readonly) {
+            for (const objectState of objectStates) {
+                objectState.outside = true;
+            }
+            sessionStorage.setItem('changed', "false");
+
+
+            updateAnnotations(objectStates);
+        }
+
+    }
+
     private collapseAllStates(collapsed: boolean): void {
         const { objectStates, collapseStates } = this.props;
 
@@ -265,6 +279,10 @@ class ObjectsListContainer extends React.PureComponent<Props, State> {
             changeFrame,
         } = this.props;
         const { objectStates, sortedStatesID, statesOrdering } = this.state;
+
+        if(sessionStorage.getItem('changed') === "true" && sessionStorage.getItem('onNextFrame') === "true"){
+            this.outAllObjects();
+        }
 
         const subKeyMap = {
             SWITCH_ALL_LOCK: keyMap.SWITCH_ALL_LOCK,

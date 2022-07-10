@@ -372,7 +372,7 @@ class Segment(models.Model):
     stop_frame = models.IntegerField()
 
     class Meta:
-        default_permissions = ()
+        default_permissions = ()§
 
 class Job(models.Model):
     segment = models.ForeignKey(Segment, on_delete=models.CASCADE)
@@ -398,7 +398,7 @@ class Job(models.Model):
         return task.bug_tracker or getattr(project, 'bug_tracker', None)
 
     def get_labels(self):
-        task = self.segment.task
+        task = self.segment.task§
         project = task.project
         return project.label_set if project else task.label_set
 
