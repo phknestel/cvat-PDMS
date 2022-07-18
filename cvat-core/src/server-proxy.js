@@ -1222,7 +1222,7 @@
             }
 
             // Session is 'task' or 'job'
-            async function updateAnnotations(session, id, data, action) {
+            async function updateAnnotations(session, id, data, action, username) {
                 const { backendAPI } = config;
                 const url = `${backendAPI}/${session}s/${id}/annotations`;
                 const params = {};
@@ -1237,7 +1237,8 @@
 
                 let response = null;
                 try {
-                    response = await requestFunc(url, JSON.stringify(data), {
+                    data['username'] = username;
+                    response = await requestFunc(url,  JSON.stringify(data), { //put username here
                         proxy: config.proxy,
                         params,
                         headers: {

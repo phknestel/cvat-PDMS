@@ -42,6 +42,7 @@ import {
 import isAbleToChangeFrame from 'utils/is-able-to-change-frame';
 import GlobalHotKeys, { KeyMap } from 'utils/mousetrap-react';
 import { switchToolsBlockerState } from 'actions/settings-actions';
+import objectsList from 'components/annotation-page/standard-workspace/objects-side-bar/objects-list';
 
 interface StateToProps {
     jobInstance: any;
@@ -209,7 +210,6 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
         };
 
         const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
-        console.log("Constructor");
         sessionStorage.setItem('uidCurr', uidCurr);
         sessionStorage.setItem('uidPrev', uidCurr);
         sessionStorage.setItem('changed', "false");
@@ -387,7 +387,6 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
 
             if (newFrame !== frameNumber) {
 
-                console.log("in newFrame if");
                 if (playing) {
                     onSwitchPlay(false);
                 }
@@ -400,8 +399,6 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
                     this.searchEmptyFrame(frameNumber + 1, stopFrame);
                 }
             }
-
-        //TODO wait function or ckeck events / simulate slow connection in chrome 3G or edge
     };
 
     private onForward = (): void => {
@@ -629,15 +626,15 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
             toolsBlockerState,
         } = this.props;
 
-        //TODO store in sessionStore if we were warning last time (not twice)
-
-        console.log("RENDER");
+        //console.log("RENDER");
         const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
         if(uidCurr !== sessionStorage.getItem('uidPrev')){
             if(uidCurr !== sessionStorage.getItem('uidCurr')){
             window.alert("You have changed the series/directory. Are you sure you want to continue");
             sessionStorage.setItem('uidCurr', uidCurr);
             sessionStorage.setItem('changed', "true");
+
+
             }
         }else{
             sessionStorage.setItem('changed', "false");

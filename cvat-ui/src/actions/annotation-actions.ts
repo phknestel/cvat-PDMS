@@ -1107,6 +1107,10 @@ export function saveAnnotationsAsync(sessionInstance: any, afterSave?: () => voi
     return async (dispatch: ActionCreator<Dispatch>): Promise<void> => {
         const { filters, showAllInterpolationTracks } = receiveAnnotationsParameters();
 
+        const username = localStorage.getItem('username');
+        const testingText = "testing+++";
+        console.log("username: " + username);
+
         dispatch({
             type: AnnotationActionTypes.SAVE_ANNOTATIONS,
             payload: {},
@@ -1123,6 +1127,7 @@ export function saveAnnotationsAsync(sessionInstance: any, afterSave?: () => voi
                     },
                 });
             });
+
             await saveJobEvent.close();
             await sessionInstance.logger.log(LogType.sendTaskInfo, await jobInfoGenerator(sessionInstance));
             dispatch(saveLogsAsync());

@@ -27,7 +27,7 @@ services:
 
   cvat:
     container_name: cvat
-    image: openvino/cvat_server
+    image: openvino/cvat_server #cvatpdms_backend
     restart: always
     depends_on:
       - cvat_redis

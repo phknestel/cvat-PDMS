@@ -48,7 +48,7 @@
         }
 
         async _request(data, action) {
-            const result = await serverProxy.annotations.updateAnnotations(this.sessionType, this.id, data, action);
+            const result = await serverProxy.annotations.updateAnnotations(this.sessionType, this.id, data, action, localStorage.getItem('username'));
 
             return result;
         }
@@ -215,7 +215,7 @@
 
                 onUpdate('Created objects are being saved on the server');
                 const indexes = this._receiveIndexes(created);
-                const createdData = await this._create({ ...created, version: this.version });
+                const createdData = await this._create({ ...created, version: this.version});
                 this.version = createdData.version;
 
                 this._updateCreatedObjects(createdData, indexes);

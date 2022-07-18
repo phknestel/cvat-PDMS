@@ -110,6 +110,8 @@ export const loginAsync = (username: string, password: string): ThunkAction => a
     } catch (error) {
         dispatch(authActions.loginFailed(error));
     }
+    localStorage.setItem('username', username);                 //getUsername
+    console.log(username);
 };
 
 export const logoutAsync = (): ThunkAction => async (dispatch) => {

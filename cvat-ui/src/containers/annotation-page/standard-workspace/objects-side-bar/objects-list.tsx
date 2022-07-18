@@ -281,7 +281,9 @@ class ObjectsListContainer extends React.PureComponent<Props, State> {
         const { objectStates, sortedStatesID, statesOrdering } = this.state;
 
         if(sessionStorage.getItem('changed') === "true" && sessionStorage.getItem('onNextFrame') === "true"){
+            //one frame back
             this.outAllObjects();
+            
         }
 
         const subKeyMap = {
