@@ -237,17 +237,27 @@ class ObjectsListContainer extends React.PureComponent<Props, State> {
         }
     }
 
-    public outAllObjects(): void {
-        const { objectStates, updateAnnotations, readonly } = this.props;
+    public outAllObjects(): void {  //store changed objects out of this list to change end frame
+        const { objectStates, frameNumber, updateAnnotations, readonly } = this.props;
+        sessionStorage.setItem('trackedObjects', "");
+
         if (!readonly) {
             for (const objectState of objectStates) {
                 objectState.outside = true;
+                sessionStorage.setItem('trackedObjects', sessionStorage.getItem('trackedObjects') + " " + objectState.clientID);
+
             }
             sessionStorage.setItem('changed', "false");
+            sessionStorage.setItem('outAllObjects', "true");
+            sessionStorage.setItem('frameNumber', frameNumber);
+            console.log("frameNumber: " + frameNumber);
+
 
 
             updateAnnotations(objectStates);
         }
+
+        console.log(sessionStorage.getItem('trackedObjects'));
 
     }
 
@@ -283,7 +293,7 @@ class ObjectsListContainer extends React.PureComponent<Props, State> {
         if(sessionStorage.getItem('changed') === "true" && sessionStorage.getItem('onNextFrame') === "true"){
             //one frame back
             this.outAllObjects();
-            
+
         }
 
         const subKeyMap = {
