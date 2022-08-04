@@ -241,6 +241,104 @@ https://user-images.githubusercontent.com/67639376/182953157-13b89e0b-720a-4974-
 
 --> You can continue working normaly as in steps 2, 3 and 4 
 
+# Code documentation
+
+## Warning when directory changes:
+
+Directory: cvat_ui/src/containers/annotation-page/top-bar/top-bar.tsx 
+
+First the constructor of the class `AnnotationTopBarContainer` is changed to set two variables from line 213 - 216
+
+```tsx
+    const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+    sessionStorage.setItem('uidCurr', uidCurr);
+    sessionStorage.setItem('uidPrev', uidCurr);
+    sessionStorage.setItem('changed', "false");
+```
+These sessionStorage variables are stored in the Browser storage itself and therefor independet of the renderings, stats and props of the different components. It is deleted when the browser is closed.
+
+-----
+
+Directory: cvat_ui/src/containers/annotation-page/top-bar/top-bar.tsx 
+Here the same code is added to all navigation-buttons from line 305 - 446
+
+Example:
+
+```tsx
+    private onNextFrame = (): void => {
+        const { nextButtonType} = this.state;
+        let {
+            frameNumber, jobInstance, playing, onSwitchPlay,
+        } = this.props;
+
+
+        const { stopFrame } = jobInstance;
+        const newFrame = Math.min(jobInstance.stopFrame, frameNumber + 1);
+
+        //Check Register current
+        const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+        sessionStorage.setItem('uidPrev', uidCurr);
+        sessionStorage.setItem('onNextFrame', "true");
+
+
+            if (newFrame !== frameNumber) {
+
+                if (playing) {
+                    onSwitchPlay(false);
+                }
+
+                if (nextButtonType === 'regular') {
+                    this.changeFrame(newFrame);
+                } else if (nextButtonType === 'filtered') {
+                    this.searchAnnotations(frameNumber + 1, stopFrame);
+                } else {
+                    this.searchEmptyFrame(frameNumber + 1, stopFrame);
+                }
+            }
+    };
+```
+
+The the code of the feature is implemented in the three lines under the //Check Register current comment.
+
+1. The current folderName is checked, which is at the seccond last position of the .split() array sind the last one is the frameName.
+2. The sessionStorage is used to store variables independent of rerenderings and frame changes. It is deleted everytime the browser is closed.
+3. First, the current folderName is stored in a variable 
+4. Seccond, the variable onNextFrame stores the String value true. This is a variable that is used as boolean-like value later.
+
+-----
+
+Directory: cvat_ui/src/containers/annotation-page/top-bar/top-bar.tsx 
+Here the render() function is partly overwritten in line 631 - 642
+
+```tsx
+    const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
+    if(uidCurr !== sessionStorage.getItem('uidPrev')){
+        if(uidCurr !== sessionStorage.getItem('uidCurr')){
+        window.alert("You have changed the series/directory. Are you sure you want to continue");
+        sessionStorage.setItem('uidCurr', uidCurr);
+        sessionStorage.setItem('changed', "true");
+
+
+        }
+    }else{
+        sessionStorage.setItem('changed', "false");
+    }
+```
+
+The render() function is rerendering the page and the stored values in props are overwritten. Therefore the new data can be compared with the previously stored data.
+
+1. Again the current fileName is stored in a variable (it is now updated)
+2. The old and the new fileName are compared by reading the sessionStorage variable 'uidPrev'
+3. Now the uidCurr is compared with a stored value in the sesseionStorage variable uidCurr to prevent that the alert message is called twice.
+    !the render() function is called multiple times when a navigation button is clicked but the alert message is only needed once!
+4. Now the alert message is called to let the user know that he changed the directory 
+5. uidCurr is overwritten with the updated fileName to prevent multiple warnings
+6. the sessionStorage variable is set to 'true' for a different feature depending on the changing of the directory
+7. OR the sessionStorage variable is set to 'false'if the change of the frame was not a change in the directory
+
+
+
+
 
 
 
