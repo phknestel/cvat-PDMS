@@ -203,3 +203,25 @@ Other ways to ask questions and get our support:
 [coverage-url]: https://coveralls.io/github/openvinotoolkit/cvat?branch=develop
 [doi-img]: https://zenodo.org/badge/139156354.svg
 [doi-url]: https://zenodo.org/badge/latestdoi/139156354
+
+# Added Features
+
+Project developed in cooperation between Medical MI and TUM to improve the CVAT program for medical imaging by following features and prevent errors.
+
+## Features:
+- Warn the user when the directory (Series) is changed
+- Automatically stopping of the tracking mode when the directory (Series) is changed
+
+## Demonstration:
+
+https://user-images.githubusercontent.com/67639376/182949188-02e2f064-0d31-4b49-a804-784d74abba0a.mp4
+
+## Requirements:
+
+- The different series of your job need to be saved in different folders to detect the directory change, since it depends on the naming of the folder structure
+- As you can see in the demonstration, you always have to save the job once you changed any annotation in the tracking mode. It does not matter if you create a label, move a label, set it to outside, delete it or anything else, you need to save the job everytime you do that to let the feature work properly.
+
+
+
+
+
