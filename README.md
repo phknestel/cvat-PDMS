@@ -214,12 +214,32 @@ Project developed in cooperation between Medical MI and TUM to improve the CVAT 
 
 ## Demonstration:
 
-https://user-images.githubusercontent.com/67639376/182949188-02e2f064-0d31-4b49-a804-784d74abba0a.mp4
+https://user-images.githubusercontent.com/67639376/182953157-13b89e0b-720a-4974-b177-a53c648a176c.mp4
+
 
 ## Requirements:
 
 - The different series of your job need to be saved in different folders to detect the directory change, since it depends on the naming of the folder structure
 - As you can see in the demonstration, you always have to save the job once you changed any annotation in the tracking mode. It does not matter if you create a label, move a label, set it to outside, delete it or anything else, you need to save the job everytime you do that to let the feature work properly.
+- To get the updated annotations displayed correctly when automatically stopping the tracking, the page must be refreshed after a directory change
+
+## Step-by-Step: Warning when directory changes
+
+1. Create a new Job with multiple Series, stored in one folder each
+2. Click yourself through your stack of frames with the forward and backwards buttons you like. A warning appears when you change the directory  (Series)
+
+## Step-by-Step: Automatically stopping of the tracking mode when directory (Series) changes
+
+1. Create a new Job with multiple Series, stored in one folder each
+2. Start creating new shapes with tracking enabled in a frame and click save afterwards
+3. Move or change the shape in a frame and click save afterwards
+4. You can set the tracked shapes to outside and click save afterwards
+5. You can repeat step 2, 3 and 4 as often as you want in the series
+6. If you change the directory you will get a warning
+7. Then all tracked shapes will be automatically set to outside (the tracking is stopped at the first frame of the new series)
+8. Befor you do something else, you have to click save again and refresh the page afterwards
+
+--> You can continue working normaly as in steps 2, 3 and 4 
 
 
 
