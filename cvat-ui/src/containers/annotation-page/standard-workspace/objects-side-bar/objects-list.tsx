@@ -240,6 +240,7 @@ class ObjectsListContainer extends React.PureComponent<Props, State> {
     public outAllObjects(): void {  //store changed objects out of this list to change end frame
         const { objectStates, frameNumber, updateAnnotations, readonly } = this.props;
         sessionStorage.setItem('trackedObjects', "");
+        const prefix = "[PDMS]: ";
 
         if (!readonly) {
             for (const objectState of objectStates) {
@@ -250,7 +251,7 @@ class ObjectsListContainer extends React.PureComponent<Props, State> {
             sessionStorage.setItem('changed', "false");
             sessionStorage.setItem('outAllObjects', "true");
             sessionStorage.setItem('frameNumber', frameNumber);
-            console.log("frameNumber: " + frameNumber);
+            console.log(prefix + "frameNumber: " + frameNumber);
 
 
 
@@ -293,7 +294,6 @@ class ObjectsListContainer extends React.PureComponent<Props, State> {
         if(sessionStorage.getItem('changed') === "true" && sessionStorage.getItem('onNextFrame') === "true"){
             //one frame back
             this.outAllObjects();
-
         }
 
         const subKeyMap = {

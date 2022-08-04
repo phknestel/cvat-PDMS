@@ -1237,27 +1237,27 @@
 
                 let response = null;
                 try {
-                    console.log(action + " ... " + id + "..." + sessionStorage.getItem('outAllObjects'));
-                    if(action === 'update' && sessionStorage.getItem('outAllObjects') === "true"){  //if (directory changed) -> auto_save so this method is called
-                        console.log("before");
-
-                        console.log("inside: " + data['tracks'][0]['shapes'][0]['frame']);
-                        console.log("inside: " + data['tracks'][0]['shapes'][1]['frame']);
-                        console.log("after");
+                    const prefix = "[PDMS]: ";
+                    console.log(prefix + action + " ... " + id + "..." + sessionStorage.getItem('outAllObjects'));
+                    if(action === 'update' && sessionStorage.getItem('outAllObjects') === "true"){
 
                         for (let index = 0; index < data['tracks'].length; index++) {
-                            const element = data['tracks'][index];
-                            if(data['tracks'][index]['shapes'][data['tracks'][0]['shapes'].length -1]['outside'] == true && data['tracks'][index]['shapes'][data['tracks'][0]['shapes'].length -1]['frame'] == 10){
-                                data['tracks'][0]['shapes'][data['tracks'][0]['shapes'].length -1]['frame'] = data['tracks'][0]['shapes'][1]['frame'] -1;
+
+                            let target = data['tracks'][index]['shapes'][data['tracks'][index]['shapes'].length -1];
+
+                            //DEBUG-Logs
+                            console.log(prefix + "index: " + index);
+                            console.log(prefix + "inside: " + data['tracks'][index]['shapes'][0]['frame']);
+                            console.log(prefix + "inside: " + target['frame'] + " with frame Number: " + sessionStorage.getItem('frameNumber'));
+
+                            if(target['outside'] == true && target['frame'] == sessionStorage.getItem('frameNumber')){
+                                target['frame'] = target['frame'] -1;
                             }
                         }
-                        //if this ID does not alreday have an outside frame other than the last: -> check if frame is not the current frame (directory change frame)(saved in sessionStorage)
-                        //data['tracks'][0]['shapes'][data['tracks'][0]['shapes'].length -1]['frame'] = data['tracks'][0]['shapes'][1]['frame'] -1; // the last frame of the series -> frame -1
-                        //data['tracks'][0]['shapes'][1]['outside'] = true;
 
                         sessionStorage.setItem('outAllObjects', "false");
 
-                    }// save id already updated or only change if frame is end frame
+                    }
 
                     response = await requestFunc(url,  JSON.stringify(data), {
                         proxy: config.proxy,

@@ -28,6 +28,7 @@ import {
     propagateObjectAsync,
 } from 'actions/annotation-actions';
 import AnnotationTopBarComponent from 'components/annotation-page/top-bar/top-bar';
+import ObjectsListContainer from 'components/annotation-page/standard-workspace/objects-side-bar/objects-list';
 import { Canvas } from 'cvat-canvas-wrapper';
 import { Canvas3d } from 'cvat-canvas3d-wrapper';
 import {
@@ -458,6 +459,7 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
 
     private onSaveAnnotation = (): void => {
         const { onSaveAnnotation, jobInstance } = this.props;
+        //ObjectsListContainer.render();
         onSaveAnnotation(jobInstance);
     };
 
