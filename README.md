@@ -245,58 +245,21 @@ https://user-images.githubusercontent.com/67639376/182953157-13b89e0b-720a-4974-
 
 ## Warning when directory changes:
 
-Directory: cvat_ui/src/containers/annotation-page/top-bar/top-bar.tsx 
 
-First the constructor of the class `AnnotationTopBarContainer` is changed to set two variables from line 213 - 216
+First the constructor of the class `AnnotationTopBarContainer` is changed to set two variables.
 
-```tsx
-    const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
-    sessionStorage.setItem('uidCurr', uidCurr);
-    sessionStorage.setItem('uidPrev', uidCurr);
-    sessionStorage.setItem('changed', "false");
-```
+https://github.com/phknestel/cvat-PDMS/blob/569909373a4ddf3be4fae4ffff016dd69bb80972/cvat-ui/src/containers/annotation-page/top-bar/top-bar.tsx#L213-L216
+
+
 These sessionStorage variables are stored in the Browser storage itself and therefor independet of the renderings, stats and props of the different components. It is deleted when the browser is closed.
 
 -----
 
-Directory: cvat_ui/src/containers/annotation-page/top-bar/top-bar.tsx 
 Here the same code is added to all navigation-buttons from line 305 - 446
 
 Example:
 
-```tsx
-    private onNextFrame = (): void => {
-        const { nextButtonType} = this.state;
-        let {
-            frameNumber, jobInstance, playing, onSwitchPlay,
-        } = this.props;
-
-
-        const { stopFrame } = jobInstance;
-        const newFrame = Math.min(jobInstance.stopFrame, frameNumber + 1);
-
-        //Check Register current
-        const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
-        sessionStorage.setItem('uidPrev', uidCurr);
-        sessionStorage.setItem('onNextFrame', "true");
-
-
-            if (newFrame !== frameNumber) {
-
-                if (playing) {
-                    onSwitchPlay(false);
-                }
-
-                if (nextButtonType === 'regular') {
-                    this.changeFrame(newFrame);
-                } else if (nextButtonType === 'filtered') {
-                    this.searchAnnotations(frameNumber + 1, stopFrame);
-                } else {
-                    this.searchEmptyFrame(frameNumber + 1, stopFrame);
-                }
-            }
-    };
-```
+https://github.com/phknestel/cvat-PDMS/blob/569909373a4ddf3be4fae4ffff016dd69bb80972/cvat-ui/src/containers/annotation-page/top-bar/top-bar.tsx#L373-L403
 
 The the code of the feature is implemented in the three lines under the //Check Register current comment.
 
@@ -307,23 +270,9 @@ The the code of the feature is implemented in the three lines under the //Check 
 
 -----
 
-Directory: cvat_ui/src/containers/annotation-page/top-bar/top-bar.tsx 
-Here the render() function is partly overwritten in line 631 - 642
+Here the render() function is partly overwritten to warn the user once if the directory is changed.
 
-```tsx
-    const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
-    if(uidCurr !== sessionStorage.getItem('uidPrev')){
-        if(uidCurr !== sessionStorage.getItem('uidCurr')){
-        window.alert("You have changed the series/directory. Are you sure you want to continue");
-        sessionStorage.setItem('uidCurr', uidCurr);
-        sessionStorage.setItem('changed', "true");
-
-
-        }
-    }else{
-        sessionStorage.setItem('changed', "false");
-    }
-```
+https://github.com/phknestel/cvat-PDMS/blob/569909373a4ddf3be4fae4ffff016dd69bb80972/cvat-ui/src/containers/annotation-page/top-bar/top-bar.tsx#L632-L643
 
 The render() function is rerendering the page and the stored values in props are overwritten. Therefore the new data can be compared with the previously stored data.
 
