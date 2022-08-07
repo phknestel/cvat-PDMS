@@ -206,7 +206,7 @@ Other ways to ask questions and get our support:
 
 # Added Features
 
-Project developed in cooperation between Medical MI and TUM to improve the CVAT program for medical imaging by following features and prevent errors.
+Project developed in cooperation between Hera MI and TUM to improve the CVAT program for medical imaging by following features and prevent errors.
 
 ## Features:
 - Warn the user when the directory (Series) is changed
@@ -217,7 +217,7 @@ Project developed in cooperation between Medical MI and TUM to improve the CVAT 
 https://user-images.githubusercontent.com/67639376/182953157-13b89e0b-720a-4974-b177-a53c648a176c.mp4
 
 
-## Requirements:
+## Requirements to let it run properly:
 
 - The different series of your job need to be saved in different folders to detect the directory change, since it depends on the naming of the folder structure
 - As you can see in the demonstration, you always have to save the job once you changed any annotation in the tracking mode. It does not matter if you create a label, move a label, set it to outside, delete it or anything else, you need to save the job everytime you do that to let the feature work properly.
@@ -284,6 +284,76 @@ The render() function is rerendering the page and the stored values in props are
 5. uidCurr is overwritten with the updated fileName to prevent multiple warnings
 6. the sessionStorage variable is set to 'true' for a different feature depending on the changing of the directory
 7. OR the sessionStorage variable is set to 'false'if the change of the frame was not a change in the directory
+
+## Automatically stop tracking mode when directory changed:
+
+First the new method `outAllObjects()` gets the list of all annotations of this frame and sets the tracked ones to 'outside'. This causes the tracking mode to stop in this frame. 
+
+[https://github.com/phknestel/cvat-PDMS/blob/569909373a4ddf3be4fae4ffff016dd69bb80972/cvat-ui/src/containers/annotation-page/standard-workspace/objects-side-bar/objects-list.tsx#L240-L263
+
+1. The needed variables are loaded from the props
+2. The variable `trackedObjects` is instantiated
+3. A prefix is defined to identify the debugging consol logs of this feature in the browser developer tool
+4. the method now walks through this list of annotations and sets them to `outside`
+5. `changed`is set to false again and `outAllObjects` to true
+6. the frame number is also saved in the `sessionStorage` to be used later
+
+
+
+
+_The Problem with that method is, that the tracked objects are set to `outside` one frame too late. This is caused by the render() method which uses always the updated props of the new frame. But since we only detect directoy changes when it already happend we can only `outAllObjects` afterwards. Therefore we need to set them all back one frame to let the tracking mode end in the last frame of a series._
+
+
+
+----
+
+In this section the most of the work is done by overwriting the server request in which the annotation data to store is sent. 
+The problem is that, `save()` always calls diferent request methods:
+
+https://github.com/phknestel/cvat-PDMS/blob/569909373a4ddf3be4fae4ffff016dd69bb80972/cvat-core/src/annotations-saver.js#L191-L253
+
+These request methods are:
+
+https://github.com/phknestel/cvat-PDMS/blob/569909373a4ddf3be4fae4ffff016dd69bb80972/cvat-core/src/annotations-saver.js#L56-L74
+
+As you can see they all call the `_request()` with different payload:
+
+https://github.com/phknestel/cvat-PDMS/blob/569909373a4ddf3be4fae4ffff016dd69bb80972/cvat-core/src/annotations-saver.js#L50-L54
+
+And in the end every request is formed here in the server-proxy.js:
+
+https://github.com/phknestel/cvat-PDMS/blob/569909373a4ddf3be4fae4ffff016dd69bb80972/cvat-core/src/server-proxy.js#L1224-L1274
+
+The feature only needs to overwrite the `update` action!
+This is why following happens:
+
+1. only if the action is `update` AND `outAllObjects` is true [from the method outAllObjects() before] the method starts to overwrite
+2. `['tracks']` is the number of annotations in the list
+3. `data['tracks'][index]['shapes'][data['tracks'][index]['shapes'].length -1]` is the last shape of the called annotation. This means, that it is the `outside` -shape. This is the shape we want to overwrite so that the shape is `outside` one frame earlier.
+4. A few logs for debugging are implemented
+5. We only want to overwrite the outside value if it a tracked object that actually ends in the _directoryChangeFrame_. So we compare the frame in which the directory changed with the `outside` frame of the tracked object. Since we call `outAllObjects` after a directory change, this _outsideFrame_ should be the same. 
+6. if all that is true, the `target['frame']` is set to `target['frame'] -1`
+
+
+
+#Limitations and TO-DOs
+## Limitations
+1. The user always has to save the job after he did something with an annotation (created, deleted, moved, reshaped etc.)
+2. There is no automatic series detection, the user has to store them manually in different folders
+3. No automatic "end tracking mode" feature. If the user is working without saving, the annotations will not be updated:
+    a) The user annotates the Series1 with trackind mode 
+    b) The user does not save at the first frame of Series2 (so the annotations stop tracking , but one frame too late)
+    c) The user continues to create new annotations in Series2 and saves
+    e) Now the annotations of Series1 will stay like they are and will not be updated to the end of Series1
+4. The object list is not auto-rerendered so the user has to manually refresh the page in this moment
+    
+##To-DOs
+1. Auto-rerender of the [Objects-list.tsx](https://github.com/phknestel/cvat-PDMS/blob/569909373a4ddf3be4fae4ffff016dd69bb80972/cvat-ui/src/containers/annotation-page/standard-workspace/objects-side-bar/objects-list.tsx)
+2. Implement a series detection for different DICOM file strucures to detect these series automatically, using the meta files of the DICOM directories
+3. Auto-save method to have all changes saved automatically after the user changed the annotations (created, deleted, moved, reshaped etc.)
+4. Auto-save at the first frame of the new series to solve the problem in point 3 of the limitations 
+
+
 
 
 
