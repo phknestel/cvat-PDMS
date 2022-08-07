@@ -628,7 +628,6 @@ class AnnotationTopBarContainer extends React.PureComponent<Props, State> {
             toolsBlockerState,
         } = this.props;
 
-        //console.log("RENDER");
         const uidCurr = this.props.frameFilename.split('/')[this.props.frameFilename.split('/').length-2];
         if(uidCurr !== sessionStorage.getItem('uidPrev')){
             if(uidCurr !== sessionStorage.getItem('uidCurr')){

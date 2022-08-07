@@ -48,7 +48,7 @@
         }
 
         async _request(data, action) {
-            const result = await serverProxy.annotations.updateAnnotations(this.sessionType, this.id, data, action, localStorage.getItem('username'));
+            const result = await serverProxy.annotations.updateAnnotations(this.sessionType, this.id, data, action);
 
             return result;
         }

@@ -1222,7 +1222,7 @@
             }
 
             // Session is 'task' or 'job'
-            async function updateAnnotations(session, id, data, action, username) {
+            async function updateAnnotations(session, id, data, action) {
                 const { backendAPI } = config;
                 const url = `${backendAPI}/${session}s/${id}/annotations`;
                 const params = {};
