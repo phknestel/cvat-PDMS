@@ -336,7 +336,7 @@ This is why following happens:
 
 
 
-#Limitations and TO-DOs
+# Limitations and TO-DOs
 ## Limitations
 1. The user always has to save the job after he did something with an annotation (created, deleted, moved, reshaped etc.)
 2. There is no automatic series detection, the user has to store them manually in different folders
@@ -347,7 +347,7 @@ This is why following happens:
     e) Now the annotations of Series1 will stay like they are and will not be updated to the end of Series1
 4. The object list is not auto-rerendered so the user has to manually refresh the page in this moment
     
-##To-DOs
+## To-DOs
 1. Auto-rerender of the [Objects-list.tsx](https://github.com/phknestel/cvat-PDMS/blob/569909373a4ddf3be4fae4ffff016dd69bb80972/cvat-ui/src/containers/annotation-page/standard-workspace/objects-side-bar/objects-list.tsx)
 2. Implement a series detection for different DICOM file strucures to detect these series automatically, using the meta files of the DICOM directories
 3. Auto-save method to have all changes saved automatically after the user changed the annotations (created, deleted, moved, reshaped etc.)
