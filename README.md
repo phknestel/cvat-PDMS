@@ -248,8 +248,7 @@ https://user-images.githubusercontent.com/67639376/182953157-13b89e0b-720a-4974-
 
 First the constructor of the class `AnnotationTopBarContainer` is changed to set two variables.
 
-https://github.com/phknestel/cvat-PDMS/blob/569909373a4ddf3be4fae4ffff016dd69bb80972/cvat-ui/src/containers/annotation-page/top-bar/top-bar.tsx#L213-L216
-
+https://github.com/phknestel/cvat-PDMS/blob/f2e30ed6db4de50285c4a10adf9e4d20691a5f97/Clone/cvat-ui/src/containers/annotation-page/top-bar/top-bar.tsx#L213-L217
 
 These sessionStorage variables are stored in the Browser storage itself and therefor independet of the renderings, stats and props of the different components. It is deleted when the browser is closed.
 
@@ -259,7 +258,7 @@ Here the same code is added to all navigation-buttons from line 305 - 446
 
 Example:
 
-https://github.com/phknestel/cvat-PDMS/blob/569909373a4ddf3be4fae4ffff016dd69bb80972/cvat-ui/src/containers/annotation-page/top-bar/top-bar.tsx#L373-L403
+https://github.com/phknestel/cvat-PDMS/blob/f2e30ed6db4de50285c4a10adf9e4d20691a5f97/Clone/cvat-ui/src/containers/annotation-page/top-bar/top-bar.tsx#L373-L403
 
 The the code of the feature is implemented in the three lines under the //Check Register current comment.
 
@@ -272,7 +271,7 @@ The the code of the feature is implemented in the three lines under the //Check 
 
 Here the render() function is partly overwritten to warn the user once if the directory is changed.
 
-https://github.com/phknestel/cvat-PDMS/blob/569909373a4ddf3be4fae4ffff016dd69bb80972/cvat-ui/src/containers/annotation-page/top-bar/top-bar.tsx#L632-L643
+https://github.com/phknestel/cvat-PDMS/blob/f2e30ed6db4de50285c4a10adf9e4d20691a5f97/Clone/cvat-ui/src/containers/annotation-page/top-bar/top-bar.tsx#L631-L642
 
 The render() function is rerendering the page and the stored values in props are overwritten. Therefore the new data can be compared with the previously stored data.
 
@@ -289,7 +288,7 @@ The render() function is rerendering the page and the stored values in props are
 
 First the new method `outAllObjects()` gets the list of all annotations of this frame and sets the tracked ones to 'outside'. This causes the tracking mode to stop in this frame. 
 
-[https://github.com/phknestel/cvat-PDMS/blob/569909373a4ddf3be4fae4ffff016dd69bb80972/cvat-ui/src/containers/annotation-page/standard-workspace/objects-side-bar/objects-list.tsx#L240-L263
+https://github.com/phknestel/cvat-PDMS/blob/f2e30ed6db4de50285c4a10adf9e4d20691a5f97/Clone/cvat-ui/src/containers/annotation-page/standard-workspace/objects-side-bar/objects-list.tsx#L240-L263
 
 1. The needed variables are loaded from the props
 2. The variable `trackedObjects` is instantiated
@@ -310,19 +309,19 @@ _The Problem with that method is, that the tracked objects are set to `outside` 
 In this section the most of the work is done by overwriting the server request in which the annotation data to store is sent. 
 The problem is that, `save()` always calls diferent request methods:
 
-https://github.com/phknestel/cvat-PDMS/blob/569909373a4ddf3be4fae4ffff016dd69bb80972/cvat-core/src/annotations-saver.js#L191-L253
+https://github.com/phknestel/cvat-PDMS/blob/f2e30ed6db4de50285c4a10adf9e4d20691a5f97/Clone/cvat-core/src/annotations-saver.js#L191-L250
 
 These request methods are:
 
-https://github.com/phknestel/cvat-PDMS/blob/569909373a4ddf3be4fae4ffff016dd69bb80972/cvat-core/src/annotations-saver.js#L56-L74
+https://github.com/phknestel/cvat-PDMS/blob/f2e30ed6db4de50285c4a10adf9e4d20691a5f97/Clone/cvat-core/src/annotations-saver.js#L56-L74
 
 As you can see they all call the `_request()` with different payload:
 
-https://github.com/phknestel/cvat-PDMS/blob/569909373a4ddf3be4fae4ffff016dd69bb80972/cvat-core/src/annotations-saver.js#L50-L54
+https://github.com/phknestel/cvat-PDMS/blob/f2e30ed6db4de50285c4a10adf9e4d20691a5f97/Clone/cvat-core/src/annotations-saver.js#L50-L54
 
 And in the end every request is formed here in the server-proxy.js:
 
-https://github.com/phknestel/cvat-PDMS/blob/569909373a4ddf3be4fae4ffff016dd69bb80972/cvat-core/src/server-proxy.js#L1224-L1274
+https://github.com/phknestel/cvat-PDMS/blob/f2e30ed6db4de50285c4a10adf9e4d20691a5f97/Clone/cvat-core/src/server-proxy.js#L1225-L1274
 
 The feature only needs to overwrite the `update` action!
 This is why following happens:
