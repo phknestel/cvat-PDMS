@@ -237,7 +237,7 @@ class ObjectsListContainer extends React.PureComponent<Props, State> {
         }
     }
 
-    public outAllObjects(): void {  //store changed objects out of this list to change end frame
+    public outAllObjects(): void {
         const { objectStates, frameNumber, updateAnnotations, readonly } = this.props;
         sessionStorage.setItem('trackedObjects', "");
         const prefix = "[PDMS]: ";
@@ -258,7 +258,7 @@ class ObjectsListContainer extends React.PureComponent<Props, State> {
             updateAnnotations(objectStates);
         }
 
-        console.log(sessionStorage.getItem('trackedObjects'));
+        console.log(prefix + sessionStorage.getItem('trackedObjects'));
 
     }
 
